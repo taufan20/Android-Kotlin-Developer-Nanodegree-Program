@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">About Me</string>
+    <string name="name">Taufan Erfiyanto</string>
+    <string name="yellow_star">Yellow Star</string>
+    <string name="avatar_image">Avatar Image</string>
+    <string name="bio">Hi, I am Taufan Erfiyanto. I am an Athletic Android Engineer &amp; UI Designer.
+        \n\nExperiences in developing Android applications in a wide range of industries such as e-commerce,
+        point of sales, on-demand service, and fintech.Currently, I am leading a development team to
+        develop a merchant application.\n\nI am also interested in designing UI/UX. You can find my
+        design work on microstock marketplaces such as Envato, labs, and ui8.\n\nWhile not coding &amp;
+        designing, I mostly spend time reading books or playing games.
+    </string>
+    <string name="what_is_your_nick_name">What is your nick name?</string>
+    <string name="done">Done</string>
+</resources>
