@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">ShoeStore</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="onboarding_title">Welcome</string>
+    <string name="onboarding_desc">Welcome to Shop Store Inventory App. Click button below to start managing your shoe inventory.</string>
+    <string name="go_to_instructions">Go to Instructions</string>
+    <string name="instructions">Instructions</string>
+    <string name="shoe_list">Shoe List</string>
+    <string name="logout">Logout</string>
+    <string name="shoe_detail">Shoe Detail</string>
+    <string name="shoe_name">Shoe Name</string>
+    <string name="company">Company</string>
+    <string name="shoe_size">Shoe Size</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+</resources>
