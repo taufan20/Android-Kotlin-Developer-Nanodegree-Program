@@ -18,22 +18,30 @@
 
     <style name="textLabel">
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">#212121</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="textTitle">
         <item name="android:fontFamily">@font/roboto_bold</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">#212121</item>
         <item name="android:textSize">24sp</item>
     </style>
 
     <style name="textSubtitle">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:lineSpacingExtra">4sp</item>
-        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textColor">#9E9E9E</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="textName">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textColor">#212121</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 
     <style name="PrimaryButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textAllCaps">false</item>

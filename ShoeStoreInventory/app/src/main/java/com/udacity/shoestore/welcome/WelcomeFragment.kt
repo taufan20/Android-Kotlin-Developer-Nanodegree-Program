@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.udacity.shoestore.R
 import com.udacity.shoestore.databinding.FragmentLoginBinding
 import com.udacity.shoestore.databinding.FragmentWelcomeBinding
@@ -28,7 +29,11 @@ class WelcomeFragment : Fragment() {
     ): View? {
 
         val binding = DataBindingUtil.inflate<FragmentWelcomeBinding>(inflater, R.layout.fragment_welcome, container, false)
-        // Inflate the layout for this fragment
+
+
+        binding.buttonInstruction.setOnClickListener {
+            findNavController().navigate(WelcomeFragmentDirections.actionWelcomeFragmentToInstructionFragment())
+        }
         return binding.root
     }
 

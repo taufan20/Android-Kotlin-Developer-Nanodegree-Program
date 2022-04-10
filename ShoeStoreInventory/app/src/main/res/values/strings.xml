@@ -7,7 +7,7 @@
     <string name="login">Login</string>
     <string name="onboarding_title">Welcome</string>
     <string name="onboarding_desc">Welcome to Shop Store Inventory App. Click button below to start managing your shoe inventory.</string>
-    <string name="go_to_instructions">Go to Instructions</string>
+    <string name="read_instructions">Read Instructions</string>
     <string name="instructions">Instructions</string>
     <string name="shoe_list">Shoe List</string>
     <string name="logout">Logout</string>
@@ -18,4 +18,14 @@
     <string name="description">Description</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="welcome">Welcome</string>
+    <string name="instruction_one">Select one of item in Shoe List screen to see detail information.</string>
+    <string name="instruction_two">Click + button to add new inventory.</string>
+    <string name="number_one">1.</string>
+    <string name="number_two">2.</string>
+    <string name="go_to_shoe_list">Go to Shoe List</string>
+    <string name="image_url">Image URL</string>
+    <string name="success_add_shoe">New shoe successfully added</string>
+    <string name="failed_add_shoe">Shoe already exist in inventory</string>
+    <string name="empty_forms">Please complete forms first</string>
 </resources>
