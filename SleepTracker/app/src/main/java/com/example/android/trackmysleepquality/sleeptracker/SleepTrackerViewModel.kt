@@ -42,6 +42,10 @@ class SleepTrackerViewModel(
         val navigateToSleepQuality: LiveData<SleepNight>
                 get() = _navigateToSleepQuality
 
+        private val _navigateToSleepDataQuality = MutableLiveData<Long>()
+        val navigateToSleepDataQuality: LiveData<Long>
+                get() = _navigateToSleepDataQuality
+
 /*
         val nightsString = Transformations.map(nights) {nights ->
                 formatNights(nights, application.resources)
@@ -131,7 +135,13 @@ class SleepTrackerViewModel(
                 _showSnackbarEvent.value = false
         }
 
+        fun onSleepNightClicked(id: Long) {
+                _navigateToSleepDataQuality.value = id
+        }
 
+        fun onSleepDataQualityNavigated() {
+                _navigateToSleepDataQuality.value = null
+        }
 
 }
 
