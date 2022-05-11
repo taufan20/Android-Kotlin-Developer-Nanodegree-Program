@@ -1,7 +1,6 @@
 package com.udacity.shoestore.shoedetail
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,22 +9,16 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.udacity.shoestore.R
 import com.udacity.shoestore.ShoeViewModel
 import com.udacity.shoestore.databinding.FragmentShoeDetailBinding
-import com.udacity.shoestore.models.Shoe
 
 class ShoeDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentShoeDetailBinding
 
-    private val sharedViewModel: ShoeViewModel by activityViewModels() /*{
-        val detailFragmentArgs by navArgs<ShoeDetailFragmentArgs>()
-        ShoeViewModelFactory(detailFragmentArgs.shoe)
-    }*/
+    private val sharedViewModel: ShoeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,15 +28,24 @@ class ShoeDetailFragment : Fragment() {
         binding.viewModel = sharedViewModel
         binding.lifecycleOwner = this
 
+        val args = ShoeDetailFragmentArgs.fromBundle(requireArguments())
+        sharedViewModel.setShoe(args.shoe)
+
         binding.buttonCancel.setOnClickListener {
             navigateToListShoeScreen()
         }
 
         sharedViewModel.isAddShoeSuccess.observe(viewLifecycleOwner, { isSuccess ->
-            if (isSuccess) {
-                navigateToListShoeScreen()
+
+            if (isSuccess != null) {
+                if (isSuccess) {
+                    navigateToListShoeScreen()
+                    sharedViewModel.addShoeCompleted()
+                    sharedViewModel.clearShoe()
+                }
+                showToast(isSuccess)
             }
-            showToast(isSuccess)
+
         })
 
         return binding.root

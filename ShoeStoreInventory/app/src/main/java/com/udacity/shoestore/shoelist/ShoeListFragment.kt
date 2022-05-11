@@ -21,9 +21,7 @@ import com.udacity.shoestore.models.Shoe
 class ShoeListFragment : Fragment() {
 
     private lateinit var binding: FragmentShoeListBinding
-    private val sharedViewModel: ShoeViewModel by activityViewModels()/* {
-        ShoeViewModelFactory()
-    }*/
+    private val sharedViewModel: ShoeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
