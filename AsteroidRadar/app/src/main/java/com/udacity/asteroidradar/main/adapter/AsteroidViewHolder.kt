@@ -3,16 +3,16 @@ package com.udacity.asteroidradar.main.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.databinding.ItemAsteroidBinding
 
 class AsteroidViewHolder private constructor(val binding: ItemAsteroidBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(clickListener: AsteroidListener, item: Asteroid) {
-        /*binding.sleep = item
+        binding.asteroid = item
         binding.clickListener = clickListener
-        binding.executePendingBindings()*/
+        binding.executePendingBindings()
     }
 
     companion object {

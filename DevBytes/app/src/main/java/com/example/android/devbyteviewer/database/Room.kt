@@ -50,6 +50,7 @@ fun getDatabase(context: Context): VideoDatabase {
         if (!::INSTANCE.isInitialized) {
             INSTANCE = Room.databaseBuilder(
                 context.applicationContext,
+
                 VideoDatabase::class.java,
                 "videos"
             ).build()

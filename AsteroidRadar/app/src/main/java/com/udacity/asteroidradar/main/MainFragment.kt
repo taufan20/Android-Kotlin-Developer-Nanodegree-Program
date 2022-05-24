@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.udacity.asteroidradar.Asteroid
+import androidx.navigation.fragment.findNavController
+import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.main.adapter.AsteroidAdapter
@@ -23,8 +24,8 @@ class MainFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        val adapter = AsteroidAdapter(AsteroidListener { asteroidId ->
-
+        val adapter = AsteroidAdapter(AsteroidListener { asteroid ->
+            openDetailAsteroidPage(asteroid)
         })
 
         // Dummy data
@@ -32,7 +33,7 @@ class MainFragment : Fragment() {
             Asteroid(
                 id = 0L,
                 codename = "test",
-                closeApproachDate = "",
+                closeApproachDate = "08-02-2022",
                 absoluteMagnitude = 0.0,
                 estimatedDiameter = 0.0,
                 relativeVelocity = 0.0,
@@ -42,7 +43,7 @@ class MainFragment : Fragment() {
             Asteroid(
                 id = 0L,
                 codename = "test",
-                closeApproachDate = "",
+                closeApproachDate = "08-02-2022",
                 absoluteMagnitude = 0.0,
                 estimatedDiameter = 0.0,
                 relativeVelocity = 0.0,
@@ -52,7 +53,7 @@ class MainFragment : Fragment() {
             Asteroid(
                 id = 0L,
                 codename = "test",
-                closeApproachDate = "",
+                closeApproachDate = "08-02-2022",
                 absoluteMagnitude = 0.0,
                 estimatedDiameter = 0.0,
                 relativeVelocity = 0.0,
@@ -62,12 +63,12 @@ class MainFragment : Fragment() {
             Asteroid(
                 id = 0L,
                 codename = "test",
-                closeApproachDate = "",
+                closeApproachDate = "08-02-2022",
                 absoluteMagnitude = 0.0,
                 estimatedDiameter = 0.0,
                 relativeVelocity = 0.0,
                 distanceFromEarth = 0.0,
-                isPotentiallyHazardous = false
+                isPotentiallyHazardous = true
             )
         )
 
@@ -79,6 +80,10 @@ class MainFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    private fun openDetailAsteroidPage(asteroid: Asteroid) {
+        findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
