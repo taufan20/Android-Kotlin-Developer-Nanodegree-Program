@@ -1,6 +1,6 @@
 package com.udacity.asteroidradar.main.adapter
 
-import com.udacity.asteroidradar.models.Asteroid
+import com.udacity.asteroidradar.Asteroid
 
 sealed class DataItem {
 

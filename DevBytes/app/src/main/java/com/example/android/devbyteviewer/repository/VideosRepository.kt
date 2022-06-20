@@ -28,9 +28,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-class vVideosRepository(private val database: VideoDatabase) {
+class VideosRepository(private val database: VideoDatabase) {
 
-    val videos: LivdaeData<List<Video>> = Transformations.map(database.videoDao.getVideos()) {
+    val videos: LiveData<List<Video>> = Transformations.map(database.videoDao.getVideos()) {
         it.asDomainModel()
     }
 
