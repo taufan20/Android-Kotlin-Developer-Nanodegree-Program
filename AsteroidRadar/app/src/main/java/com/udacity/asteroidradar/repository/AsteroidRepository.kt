@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.asDomainModel
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.asNetworkModel
 import com.udacity.asteroidradar.network.Network
@@ -17,6 +18,9 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AsteroidRepository(private val database: AsteroidDatabase) {
 
@@ -26,19 +30,25 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
 
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
-            Network.asteroid.getFeeds()
-                .enqueue(object: Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                val result = parseAsteroidsJsonResult(JSONObject(response.body().orEmpty()))
-                val resultDb = NetworkAsteroidContainer(result.map { asteroid ->
+            try {
+                val result = Network.asteroid.getFeeds(startDate = getCurrentFormattedDate())
+                val jsonObject = parseAsteroidsJsonResult(JSONObject(result))
+                Log.e("MainViewModel", "Success: $jsonObject")
+                val resultDb = NetworkAsteroidContainer(jsonObject.map { asteroid ->
                     asteroid.asNetworkModel()
                 })
                 database.asteroidDao.insertAll(*resultDb.asDatabaseModel())
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Failure: " + e.message)
             }
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.e("MainViewModel", "Failure: " + t.message)
-            }
-        })
         }
+    }
+    
+
+
+    fun getCurrentFormattedDate(): String {
+        val currentTime = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+        return dateFormat.format(currentTime)
     }
 }

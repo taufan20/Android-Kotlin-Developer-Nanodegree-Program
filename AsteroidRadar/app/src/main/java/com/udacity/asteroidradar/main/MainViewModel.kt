@@ -1,13 +1,22 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.asNetworkModel
 import com.udacity.asteroidradar.database.getDatabase
+import com.udacity.asteroidradar.network.AsteroidService
+import com.udacity.asteroidradar.network.Network
+import com.udacity.asteroidradar.network.NetworkAsteroidContainer
+import com.udacity.asteroidradar.network.asDatabaseModel
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.lang.Exception
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -16,15 +25,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
-            asteroidsRepository.refreshAsteroids()
+            try {
+                asteroidsRepository.refreshAsteroids()
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Failure: " + e.message)
+            }
         }
     }
 
-    val playlists = asteroidsRepository.asteroids
-
-    fun getAsteroids() {
-
-    }
+    val asteroids = asteroidsRepository.asteroids
 
     /**
      * Factory for constructing DevByteViewModel with parameter

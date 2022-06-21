@@ -12,7 +12,7 @@ abstract class AsteroidDatabase : RoomDatabase() {
 
 private lateinit var INSTANCE: AsteroidDatabase
 
-private const val DATABASE_NAME = "db_asteroid"
+private const val DATABASE_NAME = "asteroids"
 
 fun getDatabase(context: Context): AsteroidDatabase {
     synchronized(AsteroidDatabase::class.java) {
