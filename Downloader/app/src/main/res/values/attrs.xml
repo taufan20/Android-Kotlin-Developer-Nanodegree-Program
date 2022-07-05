@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LoadingButton">
+        <attr name="android:textColor" />
+        <attr name="background" />
+        <attr name="progressBackground" format="color" />
+        <attr name="loadingColor" format="color" />
+    </declare-styleable>
+</resources>

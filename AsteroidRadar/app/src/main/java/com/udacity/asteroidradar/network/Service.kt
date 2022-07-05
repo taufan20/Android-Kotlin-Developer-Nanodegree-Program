@@ -2,8 +2,7 @@ package com.udacity.asteroidradar.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.udacity.asteroidradar.PictureOfDay
-import kotlinx.coroutines.Deferred
+import com.udacity.asteroidradar.model.PictureOfDay
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,9 +24,9 @@ interface AsteroidService {
     ): String
 
     @GET("planetary/apod")
-    fun getImageOfTheDay(
+    suspend fun getImageOfTheDay(
         @Query("api_key") apiKey: String = API_KEY
-    ): Deferred<PictureOfDay>
+    ): PictureOfDay
 }
 
 private val moshi = Moshi.Builder()

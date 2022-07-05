@@ -6,13 +6,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.model.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.main.adapter.AsteroidAdapter
 import com.udacity.asteroidradar.main.adapter.AsteroidListener
 
 class MainFragment : Fragment() {
+
+    private lateinit var binding: FragmentMainBinding
 
     private val viewModel: MainViewModel by lazy {
         val activity = requireNotNull(this.activity)
@@ -23,16 +25,16 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.asteroids.observe(viewLifecycleOwner, Observer<List<Asteroid>> { asteroids ->
+        viewModel.asteroids.observe(viewLifecycleOwner) { asteroids ->
             asteroids?.apply {
                 asteroidAdapter?.submitList(this)
             }
-        })
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val binding = FragmentMainBinding.inflate(inflater)
+        binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
@@ -40,53 +42,6 @@ class MainFragment : Fragment() {
         asteroidAdapter = AsteroidAdapter(AsteroidListener { asteroid ->
             openDetailAsteroidPage(asteroid)
         })
-/*
-        // Dummy data
-        val asteroidList = mutableListOf<Asteroid>(
-            Asteroid(
-                id = 0L,
-                codename = "test",
-                closeApproachDate = "08-02-2022",
-                absoluteMagnitude = 0.0,
-                estimatedDiameter = 0.0,
-                relativeVelocity = 0.0,
-                distanceFromEarth = 0.0,
-                isPotentiallyHazardous = false
-            ),
-            Asteroid(
-                id = 0L,
-                codename = "test",
-                closeApproachDate = "08-02-2022",
-                absoluteMagnitude = 0.0,
-                estimatedDiameter = 0.0,
-                relativeVelocity = 0.0,
-                distanceFromEarth = 0.0,
-                isPotentiallyHazardous = false
-            ),
-            Asteroid(
-                id = 0L,
-                codename = "test",
-                closeApproachDate = "08-02-2022",
-                absoluteMagnitude = 0.0,
-                estimatedDiameter = 0.0,
-                relativeVelocity = 0.0,
-                distanceFromEarth = 0.0,
-                isPotentiallyHazardous = false
-            ),
-            Asteroid(
-                id = 0L,
-                codename = "test",
-                closeApproachDate = "08-02-2022",
-                absoluteMagnitude = 0.0,
-                estimatedDiameter = 0.0,
-                relativeVelocity = 0.0,
-                distanceFromEarth = 0.0,
-                isPotentiallyHazardous = true
-            )
-        )
-
-        */
-
 
         binding.asteroidRecycler.adapter = asteroidAdapter
 
@@ -106,6 +61,13 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val selectedFilter = when (item.itemId) {
+            R.id.show_today_asteroid -> Filter.TODAY
+            else -> Filter.SAVED
+        }
+        viewModel.getFilteredAsteroids(selectedFilter)
+
         return true
     }
+
 }

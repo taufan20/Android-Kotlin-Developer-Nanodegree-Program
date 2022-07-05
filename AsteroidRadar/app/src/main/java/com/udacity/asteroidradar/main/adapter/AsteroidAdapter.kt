@@ -2,7 +2,7 @@ package com.udacity.asteroidradar.main.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.model.Asteroid
 
 class AsteroidAdapter(val clickListener: AsteroidListener) : ListAdapter<Asteroid,
         AsteroidViewHolder>(AsteroidDiffCallback()) {

@@ -1,8 +1,7 @@
 package com.udacity.asteroidradar.network
 
-import android.provider.MediaStore
 import com.squareup.moshi.JsonClass
-import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.model.Asteroid
 import com.udacity.asteroidradar.database.DatabaseAsteroid
 
 @JsonClass(generateAdapter = true)
