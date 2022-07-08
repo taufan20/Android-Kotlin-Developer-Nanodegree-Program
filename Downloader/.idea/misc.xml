@@ -9,8 +9,10 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/content_detail.xml" value="0.2972972972972973" />
+        <entry key="app/src/main/res/layout/content_detail.xml" value="0.23318385650224216" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.125" />
+        <entry key="app/src/main/res/xml/button_animation.xml" value="0.1" />
+        <entry key="app/src/main/res/xml/detail_animation.xml" value="0.165" />
       </map>
     </option>
   </component>

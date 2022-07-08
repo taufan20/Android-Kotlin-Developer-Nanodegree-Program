@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity() {
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.RED
             notificationChannel.enableVibration(true)
-            notificationChannel.description = "Downloader App"
+            notificationChannel.description = getString(R.string.notification_description)
 
             val notificationManager = getSystemService(
                 NotificationManager::class.java

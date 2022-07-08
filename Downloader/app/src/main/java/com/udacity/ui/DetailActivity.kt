@@ -2,6 +2,7 @@ package com.udacity.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.udacity.EXTRA_DOWNLOAD_STATUS
@@ -37,10 +38,13 @@ class DetailActivity : AppCompatActivity() {
             setTextColor(ContextCompat.getColor(context, statusColor))
         }
 
-        btn_ok.setOnClickListener {
-            val intent = Intent(applicationContext, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+        btn_ok.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
+            false
         }
 
     }
