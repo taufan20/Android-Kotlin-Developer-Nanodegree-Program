@@ -2,6 +2,7 @@ package com.udacity.project4.locationreminders.savereminder
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.PointOfInterest
 import com.udacity.project4.R
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 
 class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSource) :
     BaseViewModel(app) {
+
     val reminderTitle = MutableLiveData<String>()
     val reminderDescription = MutableLiveData<String>()
     val reminderSelectedLocationStr = MutableLiveData<String>()

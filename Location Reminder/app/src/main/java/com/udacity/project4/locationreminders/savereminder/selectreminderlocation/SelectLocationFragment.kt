@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -20,9 +21,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
+import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
+import kotlinx.android.synthetic.main.fragment_select_location.*
 import org.koin.android.ext.android.inject
 import java.util.concurrent.*
 
@@ -34,6 +37,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSelectLocationBinding
 
+    private var selectedPoi: PointOfInterest? = null
     private lateinit var map: GoogleMap
     private val REQUEST_LOCATION_PERMISSION = 1
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -43,6 +47,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         maxWaitTime = TimeUnit.MINUTES.toMillis(2)
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
+
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
@@ -71,17 +76,17 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-//        TODO: add the map setup implementation
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-//        TODO: zoom to the user location after taking his permission
-//        TODO: add style to the map
-//        TODO: put a marker to location that the user selected
+        binding.btnSelect.setOnClickListener {
 
-
-//        TODO: call this function after the user confirms on the selected location
-        onLocationSelected()
+            if (selectedPoi == null) {
+                _viewModel.showErrorMessage.value = getString(R.string.select_poi)
+            } else {
+                onLocationSelected()
+            }
+        }
 
         return binding.root
     }
@@ -125,7 +130,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         grantResults: IntArray
     ) {
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
-            if (grantResults.size > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 enableMyLocation()
             }
         } else {
@@ -136,6 +141,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun setPoiClick(map: GoogleMap) {
         map.setOnPoiClickListener { poi ->
+            selectedPoi = poi
             val poiMarker = map.addMarker(
                 MarkerOptions()
                     .position(poi.latLng)
@@ -164,9 +170,13 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
 
     private fun onLocationSelected() {
-        //        TODO: When the user confirms on the selected location,
-        //         send back the selected location details to the view model
-        //         and navigate back to the previous fragment to save the reminder and add the geofence
+        with (_viewModel) {
+            selectedPOI.value = selectedPoi
+            latitude.value = selectedPoi?.latLng?.latitude
+            longitude.value = selectedPoi?.latLng?.longitude
+            reminderSelectedLocationStr.value = selectedPoi?.name
+            navigationCommand.value = NavigationCommand.Back
+        }
     }
 
 
