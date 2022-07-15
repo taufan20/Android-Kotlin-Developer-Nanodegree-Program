@@ -7,12 +7,14 @@ import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.udacity.project4.R
+import com.udacity.project4.databinding.ActivityAuthenticationBinding
 import com.udacity.project4.locationreminders.ReminderDescriptionActivity
 import com.udacity.project4.locationreminders.RemindersActivity
 import kotlinx.android.synthetic.main.activity_authentication.*
@@ -26,9 +28,9 @@ class AuthenticationActivity : AppCompatActivity() {
 
     private val TAG = AuthenticationActivity::class.java.simpleName
 
-    private val SIGN_IN_RESULT_CODE = 1001
-
     private val viewModel by viewModels<AuthenticationViewModel>()
+
+    private lateinit var binding: ActivityAuthenticationBinding
 
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) {
@@ -47,9 +49,9 @@ class AuthenticationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         observeAuthentication()
-        setContentView(R.layout.activity_authentication)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_authentication)
 
-        btn_login.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
             openSignInPage()
         }
 
