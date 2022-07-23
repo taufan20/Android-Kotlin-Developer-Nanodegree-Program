@@ -44,15 +44,17 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
         //TODO call @sendNotification
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
 
-        if (geofencingEvent.hasError()) {
-            val errorMessage = errorMessage(geofencingEvent.errorCode)
-            Log.e(TAG, "onHandleWork: $errorMessage")
-            return
-        }
+        geofencingEvent?.let {
+            if (it.hasError()) {
+                val errorMessage = errorMessage(it.errorCode)
+                Log.e(TAG, "onHandleWork: $errorMessage")
+                return
+            }
 
-        if (geofencingEvent.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
-            Log.d(TAG, "onHandleWork: Geofence entered ")
-            sendNotification(geofencingEvent.triggeringGeofences)
+            if (it.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
+                Log.d(TAG, "onHandleWork: Geofence entered ")
+                sendNotification(it.triggeringGeofences?.toList().orEmpty())
+            }
         }
     }
 

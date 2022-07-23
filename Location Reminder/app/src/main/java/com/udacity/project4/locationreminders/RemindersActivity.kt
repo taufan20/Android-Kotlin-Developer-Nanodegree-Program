@@ -69,4 +69,12 @@ class RemindersActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        if (navController.currentDestination?.id == R.id.reminderListFragment) {
+            finishAffinity()
+        }
+    }
+
 }
