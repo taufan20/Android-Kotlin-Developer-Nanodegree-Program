@@ -11,6 +11,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.udacity.project4.R
@@ -46,7 +47,7 @@ class ReminderListFragmentTest {
 //    TODO: test the displayed data on the UI.
 //    TODO: add testing for the error messages.
 
-    private lateinit var repository: RemindersLocalRepository
+    private lateinit var repository: ReminderDataSource
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -93,8 +94,10 @@ class ReminderListFragmentTest {
 
         val reminder: ReminderDTO = getReminderDataItem()
 
-        repository.saveReminder(reminder)
-        repository.saveReminder(reminder)
+        runBlocking {
+            repository.saveReminder(reminder)
+            repository.saveReminder(reminder)
+        }
 
         launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
 
@@ -106,19 +109,19 @@ class ReminderListFragmentTest {
             )
         )
 
-        onView(ViewMatchers.withText(reminder.title)).check(
+        onView(withText(reminder.title)).check(
             ViewAssertions.matches(
                 ViewMatchers.isDisplayed()
             )
         )
 
-        onView(ViewMatchers.withText(reminder.description)).check(
+        onView(withText(reminder.description)).check(
             ViewAssertions.matches(
                 ViewMatchers.isDisplayed()
             )
         )
 
-        onView(ViewMatchers.withText(reminder.location)).check(
+        onView(withText(reminder.location)).check(
             ViewAssertions.matches(
                 ViewMatchers.isDisplayed()
             )
