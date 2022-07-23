@@ -229,22 +229,24 @@ class SaveReminderFragment : BaseFragment() {
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
         val settingsClient = LocationServices.getSettingsClient(requireContext())
         val locationSettingsResponseTask = settingsClient.checkLocationSettings(builder.build())
-        locationSettingsResponseTask.addOnFailureListener { exception ->
-            if (exception is ResolvableApiException) {
-                try {
-                    exception.startResolutionForResult(requireActivity(),
-                        REQUEST_TURN_DEVICE_LOCATION_ON)
 
-                }catch (sendEx: IntentSender.SendIntentException) {
-                    Log.d(TAG, "Error getting location settings resolution: " + sendEx.message)
-                }
-            } else {
-                showSnackbarToEnableDeviceLocation()
-            }
-        }
         locationSettingsResponseTask.addOnCompleteListener {
             if (it.isSuccessful) {
-               if (::reminderDataItem.isInitialized) addGeofence(reminderDataItem)
+                addGeofence(reminderDataItem)
+            } else {
+                Log.e(TAG, "Error in LocationSettingsResponseTask", it.exception)
+            }
+        }
+
+        locationSettingsResponseTask.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                startIntentSenderForResult(
+                    exception.resolution.intentSender,
+                    REQUEST_TURN_DEVICE_LOCATION_ON,
+                    null, 0, 0, 0, null
+                )
+            } else {
+                showSnackbarToEnableDeviceLocation()
             }
         }
     }
@@ -271,8 +273,9 @@ class SaveReminderFragment : BaseFragment() {
                     reminderDataItem.latitude!!,
                     reminderDataItem.longitude!!,
                     GEOFENCE_RADIUS_IN_METERS)
-                .setExpirationDuration(GEOFENCE_EXPIRATION_IN_MILLISECONDS)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or
+                        Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build()
 
             // create request
@@ -281,28 +284,21 @@ class SaveReminderFragment : BaseFragment() {
                 .addGeofence(geofence)
                 .build()
 
-            geofencingClient.removeGeofences(geofencePendingIntent)?.run {
-                addOnCompleteListener {
-                    geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent)?.run {
-                        addOnSuccessListener {
-                            _viewModel.saveReminder(reminderDataItem)
-                        }
-                        addOnFailureListener {
-                            Toast.makeText(
-                                requireContext(),
-                                R.string.geofences_not_added,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            if ((it.message != null)) {
-                                Log.w(TAG, it.message.toString())
-                            }
-                        }
+            geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
+                addOnSuccessListener {
+                    _viewModel.saveReminder(reminderDataItem)
+                }
+                addOnFailureListener {
+                    _viewModel.showToast.value = getString(R.string.geofences_not_added)
+                    if ((it.message != null)) {
+                        Log.w(TAG, it.message.toString())
                     }
                 }
             }
         } else {
             // error in latitude and/or longitude
             Log.e(TAG, "Location is not valid")
+            _viewModel.showToast.value = getString(R.string.geofence_unknown_error)
         }
 
     }

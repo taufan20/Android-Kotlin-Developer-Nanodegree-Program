@@ -33,7 +33,6 @@ import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
@@ -91,13 +90,12 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnM
 
 
     @SuppressLint("MissingPermission")
-    private fun enableMyLocation() {
+    private fun getMyLastKnownLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            map.isMyLocationEnabled = true
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     if (location != null) {
@@ -126,6 +124,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnM
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
+                map.isMyLocationEnabled = true
                 checkDeviceLocationSettings()
             }
             shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
@@ -165,7 +164,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnM
 
         locationSettingsResponseTask.addOnCompleteListener {
             if (it.isSuccessful) {
-                enableMyLocation()
+                getMyLastKnownLocation()
             }
         }
     }
@@ -178,7 +177,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnM
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                checkDeviceLocationSettings()
+                requestForegroundLocationPermissions()
         } else {
             showSnackbarToOpenSettings()
         }
@@ -204,7 +203,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback, GoogleMap.OnM
             }
         } else if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON) {
             if (resultCode == Activity.RESULT_OK) {
-                enableMyLocation()
+                getMyLastKnownLocation()
             } else {
                 showSnackbarToEnableDeviceLocation()
             }

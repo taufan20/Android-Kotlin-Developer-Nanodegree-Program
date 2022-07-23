@@ -62,6 +62,7 @@ class ReminderListFragmentTest {
 
             single { RemindersLocalRepository(get()) as ReminderDataSource }
             single { LocalDB.createRemindersDao(getApplicationContext()) }
+
         }
         startKoin {
             androidContext(getApplicationContext())
