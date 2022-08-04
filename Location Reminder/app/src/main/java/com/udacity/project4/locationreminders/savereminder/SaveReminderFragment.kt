@@ -51,7 +51,7 @@ val GEOFENCE_EXPIRATION_IN_MILLISECONDS: Long = TimeUnit.HOURS.toMillis(1)
 class SaveReminderFragment : BaseFragment() {
 
     private val TAG = SaveReminderFragment::class.java.simpleName
-
+c
     //Get the view model this time as a single to be shared with the another fragment
     override val _viewModel: SaveReminderViewModel by sharedViewModel()
     private lateinit var binding: FragmentSaveReminderBinding
