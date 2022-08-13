@@ -14,6 +14,7 @@ import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
+import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.repository.ElectionLocalRepository
 
 class ElectionsFragment: Fragment() {
@@ -31,7 +32,9 @@ class ElectionsFragment: Fragment() {
 
         //TODO: Add ViewModel values and create ViewModel
         val application = requireNotNull(this.activity).application
-        val dataSource = ElectionLocalRepository(ElectionDatabase.getInstance(application).electionDao)
+        val dataSource = ElectionLocalRepository(
+            CivicsApi.retrofitService,
+            ElectionDatabase.getInstance(application).electionDao)
         val viewModelFactory = ElectionsViewModelFactory(dataSource, application)
 
         viewModel = ViewModelProvider(this, viewModelFactory)

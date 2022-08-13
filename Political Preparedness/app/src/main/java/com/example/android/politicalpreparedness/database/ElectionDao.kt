@@ -17,18 +17,18 @@ interface ElectionDao {
 
     //TODO: Add select all election query
     @Query("SELECT * FROM election_table")
-    suspend fun getElections(): List<Election>
+    suspend fun getSavedElections(): List<Election>
 
     //TODO: Add select single election query
     @Query("SELECT * FROM election_table WHERE id == :electionId")
-    suspend fun getElectionById(electionId: Int)
+    suspend fun getElectionById(electionId: Int) : Election
 
     //TODO: Add delete query
-    @DELETE
-    suspend fun delete(election: Election)
+    @Query("DELETE FROM election_table WHERE id == :electionId")
+    suspend fun removeElection(electionId: Int)
 
     //TODO: Add clear query
     @Query("DELETE FROM election_table")
-    suspend fun deleteAll()
+    suspend fun removeAll()
 
 }

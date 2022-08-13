@@ -11,7 +11,7 @@ class VoterInfoViewModelFactory(
     private val app: Application
 ): ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(VoterInfoViewModel::class.java)) {
             return VoterInfoViewModel(electionDataSource, app) as T
         }
