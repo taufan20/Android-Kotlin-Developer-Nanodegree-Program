@@ -17,6 +17,7 @@ buildscript {
         version_play_services_location = "20.0.0"
         version_room = "2.4.3"
         koinVersion = '2.0.1'
+        version_okhttp = "4.10.0"
     }
 
     repositories {

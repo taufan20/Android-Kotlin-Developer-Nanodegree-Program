@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.election
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -45,7 +46,7 @@ class ElectionsViewModel(
                     _upComingElections.value = dataList
                 }
                 is Result.Error ->
-                    showErrorMessage.value = result.message
+                    showErrorMessage.value = result.message?.orEmpty()
                 else -> {}
             }
         }
@@ -53,7 +54,8 @@ class ElectionsViewModel(
 
     fun getSavedElections() {
         viewModelScope.launch {
-            _savedElections.value = dataSource.getSavedElections() as List<Election>
+//            Log.d("ElectionsViewModel", "getSavedElections: ${Result.Success(dataSource.getSavedElections()).data}")
+//            _savedElections.value = Result.Success(dataSource.getSavedElections())
         }
     }
 

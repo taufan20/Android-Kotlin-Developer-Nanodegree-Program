@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.repository
 
+import android.util.Log
 import com.example.android.politicalpreparedness.database.ElectionDao
 import com.example.android.politicalpreparedness.datasource.ElectionDataSource
 import com.example.android.politicalpreparedness.datasource.Result
@@ -18,6 +19,7 @@ class ElectionLocalRepository(
     override suspend fun getUpComingElections() = withContext(ioDispatcher) {
             return@withContext try {
                 val result = civicsApiService.getElections()
+                Log.d("ElectionDataSource", "getUpComingElections: ${result.elections.size}")
                 Result.Success(result.elections)
             } catch (e: Exception) {
                 Result.Error(e.localizedMessage)
