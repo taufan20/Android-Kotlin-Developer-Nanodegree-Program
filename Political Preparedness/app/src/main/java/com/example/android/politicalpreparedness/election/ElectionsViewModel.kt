@@ -22,8 +22,7 @@ class ElectionsViewModel(
     var upComingElections: LiveData<List<Election>> = _upComingElections
 
     //TODO: Create live data val for saved elections
-    private val _savedElections = MutableLiveData<List<Election>>()
-    var savedElections: LiveData<List<Election>> = _savedElections
+    var savedElections: LiveData<List<Election>> = dataSource.savedElections
 
     private val _navigateToVoterInfo = MutableLiveData<Election>()
     val navigateToVoterInfo: LiveData<Election>
@@ -46,16 +45,8 @@ class ElectionsViewModel(
                     _upComingElections.value = dataList
                 }
                 is Result.Error ->
-                    showErrorMessage.value = result.message?.orEmpty()
-                else -> {}
+                    showErrorMessage.value = result.message.orEmpty()
             }
-        }
-    }
-
-    fun getSavedElections() {
-        viewModelScope.launch {
-//            Log.d("ElectionsViewModel", "getSavedElections: ${Result.Success(dataSource.getSavedElections()).data}")
-//            _savedElections.value = Result.Success(dataSource.getSavedElections())
         }
     }
 

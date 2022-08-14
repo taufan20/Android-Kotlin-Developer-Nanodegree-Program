@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
+import com.example.android.politicalpreparedness.network.CivicsApi
+import com.example.android.politicalpreparedness.repository.ElectionRepository
 
 class VoterInfoFragment : Fragment() {
 
@@ -18,8 +22,17 @@ class VoterInfoFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_voter_info, container, false)
 
         //TODO: Add ViewModel values and create ViewModel
+        val application = requireNotNull(this.activity).application
+        val dataSource = ElectionRepository(
+            CivicsApi.retrofitService,
+            ElectionDatabase.getInstance(application).electionDao)
+        val viewModelFactory = ElectionsViewModelFactory(dataSource, application)
+
+        val viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(VoterInfoViewModel::class.java)
 
         //TODO: Add binding values
+        binding.viewModel = viewModel
 
         //TODO: Populate voter info -- hide views without provided data.
         /**

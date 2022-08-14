@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.databinding.HeaderBinding
 import com.example.android.politicalpreparedness.databinding.ViewholderElectionBinding
 import com.example.android.politicalpreparedness.network.models.Election
 import kotlinx.coroutines.CoroutineScope
@@ -21,11 +22,11 @@ class ElectionListAdapter(private val clickListener: ElectionListener): ListAdap
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addHeaderAndSubmitList(list: List<Election>?) {
+    fun addHeaderAndSubmitList(title: String, list: List<Election>?) {
         adapterScope.launch {
             val items = when (list) {
-                null -> listOf(DataItem.Header)
-                else -> listOf(DataItem.Header) + list.map { DataItem.ElectionItem(it) }
+                null -> listOf(DataItem.Header(title))
+                else -> listOf(DataItem.Header(title)) + list.map { DataItem.ElectionItem(it) }
             }
             withContext(Dispatchers.Main) {
                 submitList(items)
@@ -48,6 +49,10 @@ class ElectionListAdapter(private val clickListener: ElectionListener): ListAdap
             is ElectionViewHolder -> {
                 val item = getItem(position) as DataItem.ElectionItem
                 holder.bind(item.election, clickListener)
+            }
+            is TextViewHolder -> {
+                val item = getItem(position) as DataItem.Header
+                holder.bind(item.title)
             }
         }
     }
@@ -85,12 +90,18 @@ class ElectionViewHolder(private val binding: ViewholderElectionBinding) : Recyc
 }
 
 
-class TextViewHolder(view: View): RecyclerView.ViewHolder(view) {
+class TextViewHolder(private val binding: HeaderBinding): RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(title: String) {
+        binding.title = title
+        binding.executePendingBindings()
+    }
+
     companion object {
         fun from(parent: ViewGroup): TextViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val view = layoutInflater.inflate(R.layout.header, parent, false)
-            return TextViewHolder(view)
+            val binding = HeaderBinding.inflate(layoutInflater, parent, false)
+            return TextViewHolder(binding)
         }
     }
 }
@@ -124,7 +135,8 @@ sealed class DataItem {
 
     }
 
-    object Header : DataItem() {
+    data class Header(val title: String) : DataItem() {
+
         override val id: Int
             get() = Int.MIN_VALUE
 

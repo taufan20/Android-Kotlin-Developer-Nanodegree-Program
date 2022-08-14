@@ -15,7 +15,7 @@ import com.example.android.politicalpreparedness.databinding.FragmentElectionBin
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
 import com.example.android.politicalpreparedness.network.CivicsApi
-import com.example.android.politicalpreparedness.repository.ElectionLocalRepository
+import com.example.android.politicalpreparedness.repository.ElectionRepository
 
 class ElectionsFragment: Fragment() {
 
@@ -32,7 +32,7 @@ class ElectionsFragment: Fragment() {
 
         //TODO: Add ViewModel values and create ViewModel
         val application = requireNotNull(this.activity).application
-        val dataSource = ElectionLocalRepository(
+        val dataSource = ElectionRepository(
             CivicsApi.retrofitService,
             ElectionDatabase.getInstance(application).electionDao)
         val viewModelFactory = ElectionsViewModelFactory(dataSource, application)
@@ -71,13 +71,19 @@ class ElectionsFragment: Fragment() {
         //TODO: Populate recycler adapters
         viewModel.upComingElections.observe(viewLifecycleOwner, Observer { elections ->
             elections?.let {
-                upComingElectionAdapter.addHeaderAndSubmitList(it)
+                upComingElectionAdapter.addHeaderAndSubmitList(
+                    getString(R.string.upcoming_elections),
+                    it
+                )
             }
         })
 
         viewModel.savedElections.observe(viewLifecycleOwner, Observer { elections ->
             elections?.let {
-                savedElectionAdapter.addHeaderAndSubmitList(it)
+                savedElectionAdapter.addHeaderAndSubmitList(
+                    getString(R.string.saved_elections),
+                    it
+                )
             }
         })
 
@@ -89,7 +95,6 @@ class ElectionsFragment: Fragment() {
     //TODO: Refresh adapters when fragment loads
     private fun refreshElections() {
         viewModel.getUpComingElections()
-        viewModel.getSavedElections()
     }
 
 }

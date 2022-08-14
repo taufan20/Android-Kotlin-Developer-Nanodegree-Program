@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/default_margin"
         android:onClick="@{() -> clickListener.onClick(election)}">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -28,15 +27,27 @@
             android:text="@{election.name}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:textColor="@color/gray900"
-            android:textStyle="bold"/>
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/election_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@{election.electionDay.toString()}"
             tools:text="Sun Jun 06 00:00:00 EDT 2021"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            android:textColor="@color/gray600"/>
+            android:textColor="@color/gray600"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/gray200"
+            android:layout_marginStart="@dimen/default_margin"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -2,6 +2,7 @@
 <resources>
     <dimen name="default_padding">8dp</dimen>
     <dimen name="default_margin">16dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
 
     <!-- TODO: Add necessary dimension values -->s
 
