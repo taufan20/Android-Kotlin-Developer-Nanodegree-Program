@@ -5,6 +5,7 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
@@ -15,24 +16,28 @@ class VoterInfoFragment : Fragment() {
 
     private lateinit var binding: FragmentVoterInfoBinding
 
+    private lateinit var viewModel: VoterInfoViewModel
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_voter_info, container, false)
 
+        val electionId = navArgs<VoterInfoFragmentArgs>().value.argElectionId
+
         //TODO: Add ViewModel values and create ViewModel
         val application = requireNotNull(this.activity).application
         val dataSource = ElectionRepository(
             CivicsApi.retrofitService,
             ElectionDatabase.getInstance(application).electionDao)
-        val viewModelFactory = ElectionsViewModelFactory(dataSource, application)
+        val viewModelFactory = VoterInfoViewModelFactory(dataSource, application, electionId)
 
-        val viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(VoterInfoViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory) [VoterInfoViewModel::class.java]
 
         //TODO: Add binding values
-        binding.viewModel = viewModel
+        binding.voterInfoViewModel = viewModel
+        binding.lifecycleOwner = this
 
         //TODO: Populate voter info -- hide views without provided data.
         /**

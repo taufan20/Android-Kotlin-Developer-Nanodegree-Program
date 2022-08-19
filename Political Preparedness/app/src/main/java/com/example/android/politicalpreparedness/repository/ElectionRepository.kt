@@ -6,7 +6,6 @@ import com.example.android.politicalpreparedness.datasource.ElectionDataSource
 import com.example.android.politicalpreparedness.datasource.Result
 import com.example.android.politicalpreparedness.network.CivicsApiService
 import com.example.android.politicalpreparedness.network.models.Election
-import com.example.android.politicalpreparedness.network.models.VoterInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -33,14 +32,20 @@ class ElectionRepository(
         electionDao.saveElection(election)
     }
 
-    override suspend fun getVoterInfo(address: String, id: Long) = withContext(ioDispatcher) {
+    override suspend fun getElectionById(electionId: Long) = withContext(ioDispatcher) {
         return@withContext try {
-            val result = civicsApiService.getVoterInfo(address, id)
-            val voterInfo = VoterInfo(
-                election = result.election,
-                pollingLocations = result.pollingLocations
-            )
-            Result.Success(voterInfo)
+            val result = electionDao.getElectionById(electionId)
+            Result.Success(result)
+        }catch (e: Exception) {
+            Result.Error(e.localizedMessage)
+        }
+    }
+
+    override suspend fun getVoterInfo(address: String, electionId: Long) = withContext(ioDispatcher) {
+        return@withContext try {
+            val result = civicsApiService.getVoterInfo(address, electionId)
+            val state = result.state.orEmpty()
+            Result.Success(state)
         } catch (e: Exception) {
             Result.Error(e.localizedMessage)
 
@@ -51,7 +56,7 @@ class ElectionRepository(
         electionDao.removeAll()
     }
 
-    override suspend fun deleteElectionById(electionId: Int) = withContext(ioDispatcher) {
+    override suspend fun deleteElectionById(electionId: Long) = withContext(ioDispatcher) {
         electionDao.removeElection(electionId)
     }
 }

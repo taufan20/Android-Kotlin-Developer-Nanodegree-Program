@@ -6,7 +6,7 @@
     <!-- TODO: Add data binding node for Voter Info ViewModel -->
     <data>
         <variable
-            name="viewModel"
+            name="voterInfoViewModel"
             type="com.example.android.politicalpreparedness.election.VoterInfoViewModel" />
     </data>
 

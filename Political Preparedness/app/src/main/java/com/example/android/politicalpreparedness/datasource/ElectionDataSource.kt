@@ -2,6 +2,7 @@ package com.example.android.politicalpreparedness.datasource
 
 import androidx.lifecycle.LiveData
 import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.network.models.State
 import com.example.android.politicalpreparedness.network.models.VoterInfo
 
 interface ElectionDataSource {
@@ -9,7 +10,8 @@ interface ElectionDataSource {
     val savedElections: LiveData<List<Election>>
     suspend fun getUpComingElections(): Result<List<Election>>
     suspend fun saveElection(election: Election)
-    suspend fun getVoterInfo(address: String, id: Long): Result<VoterInfo>
+    suspend fun getElectionById(electionId: Long): Result<Election>
+    suspend fun getVoterInfo(address: String = "", electionId: Long): Result<List<State>>
     suspend fun deleteElections()
-    suspend fun deleteElectionById(electionId: Int)
+    suspend fun deleteElectionById(electionId: Long)
 }

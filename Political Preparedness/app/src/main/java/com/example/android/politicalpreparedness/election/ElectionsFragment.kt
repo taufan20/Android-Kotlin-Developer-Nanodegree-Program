@@ -37,8 +37,7 @@ class ElectionsFragment: Fragment() {
             ElectionDatabase.getInstance(application).electionDao)
         val viewModelFactory = ElectionsViewModelFactory(dataSource, application)
 
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(ElectionsViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[ElectionsViewModel::class.java]
 
         //TODO: Add binding values
         binding.electionViewModel = viewModel
