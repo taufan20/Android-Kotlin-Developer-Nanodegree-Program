@@ -2,6 +2,7 @@ package com.example.android.politicalpreparedness.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -22,11 +23,11 @@ interface ElectionDao {
 
     //TODO: Add select single election query
     @Query("SELECT * FROM election_table WHERE id == :electionId")
-    suspend fun getElectionById(electionId: Long) : Election
+    suspend fun getElectionById(electionId: Int) : Election
 
     //TODO: Add delete query
-    @Query("DELETE FROM election_table WHERE id == :electionId")
-    suspend fun removeElection(electionId: Long)
+    @Delete
+    suspend fun removeElection(election: Election)
 
     //TODO: Add clear query
     @Query("DELETE FROM election_table")

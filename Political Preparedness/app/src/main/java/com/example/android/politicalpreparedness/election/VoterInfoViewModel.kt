@@ -16,21 +16,16 @@ import com.example.android.politicalpreparedness.network.models.VoterInfo
 class VoterInfoViewModel(
     private val dataSource: ElectionDataSource,
     private val app: Application,
-    private val electionId: Long) : ViewModel() {
+    val election: Election) : ViewModel() {
 
     //TODO: Add live data to hold voter info
     private val _electionInfoUrl = MutableLiveData<String>()
-    var electionInfoUrl: LiveData<String> = _electionInfoUrl
 
     //TODO: Add var and methods to populate voter info
     private var _votingLocationFinderUrl = MutableLiveData<String>()
-    val votingLocationFinderUrl: LiveData<String>
-        get() = _votingLocationFinderUrl
 
     //TODO: Add var and methods to support loading URLs
     private var _ballotInfoUrl = MutableLiveData<String>()
-    val ballotInfoUrl: LiveData<String>
-        get() = _ballotInfoUrl
 
     private var _savedElection = MutableLiveData<Election?>()
     val savedElection: LiveData<Election?>
@@ -39,9 +34,14 @@ class VoterInfoViewModel(
     val showLoading: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val showErrorMessage: SingleLiveEvent<String> = SingleLiveEvent()
 
+    private val _navigateToWebBrowser = MutableLiveData<String?>()
+    val navigateToWebBrowser: LiveData<String?>
+        get() = _navigateToWebBrowser
+
 
     init {
         getVoterInfo()
+        getSavedElection()
     }
 
     //TODO: Add var and methods to save and remove elections to local database
@@ -55,8 +55,9 @@ class VoterInfoViewModel(
     private fun getVoterInfo() {
         viewModelScope.launch {
             showLoading.value = true
-            val result = dataSource.getVoterInfo(electionId = electionId)
-            showLoading.postValue(false)
+            val dummyAddress = "Modesto"
+            val result = dataSource.getVoterInfo(address = dummyAddress, electionId = election.id)
+            showLoading.value = false
             when (result) {
                 is Result.Success<*> -> {
                     val states = result.data as List<State>
@@ -74,10 +75,9 @@ class VoterInfoViewModel(
         }
     }
 
-    fun getSavedElection(electionId: Long) {
+    private fun getSavedElection() {
         viewModelScope.launch {
-            val result = dataSource.getElectionById(electionId = electionId)
-            when (result) {
+            when (val result = dataSource.getElectionById(electionId = election.id)) {
                 is Result.Success<*> -> {
                     _savedElection.value = result.data as Election
                 }
@@ -88,10 +88,33 @@ class VoterInfoViewModel(
         }
     }
 
-    fun updateFollowStatus() {
-        if (_savedElection.value == null) {
-            dataSource.saveElection(_savedElection.value)
+    fun onFollowButtonClicked() {
+        viewModelScope.launch {
+            if (_savedElection.value == null) {
+                dataSource.saveElection(election)
+            } else {
+                dataSource.deleteElection(election)
+            }
         }
     }
+
+    fun onElectionInfoClicked() {
+        _navigateToWebBrowser.value = _electionInfoUrl.value
+    }
+
+    fun onBallotInfoClicked() {
+        _navigateToWebBrowser.value = _ballotInfoUrl.value
+    }
+
+    fun onVotingLocationClicked() {
+        _navigateToWebBrowser.value = _votingLocationFinderUrl.value
+    }
+
+    fun onNavigatingToBrowserDone() {
+        _navigateToWebBrowser.value = null
+    }
+
+
+
 
 }

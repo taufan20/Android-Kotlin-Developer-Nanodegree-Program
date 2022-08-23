@@ -28,11 +28,13 @@ class ElectionRepository(
             }
         }
 
-    override suspend fun saveElection(election: Election) = withContext(ioDispatcher) {
-        electionDao.saveElection(election)
+    override suspend fun saveElection(election: Election) {
+        withContext(ioDispatcher) {
+            electionDao.saveElection(election)
+        }
     }
 
-    override suspend fun getElectionById(electionId: Long) = withContext(ioDispatcher) {
+    override suspend fun getElectionById(electionId: Int) = withContext(ioDispatcher) {
         return@withContext try {
             val result = electionDao.getElectionById(electionId)
             Result.Success(result)
@@ -41,7 +43,7 @@ class ElectionRepository(
         }
     }
 
-    override suspend fun getVoterInfo(address: String, electionId: Long) = withContext(ioDispatcher) {
+    override suspend fun getVoterInfo(address: String, electionId: Int) = withContext(ioDispatcher) {
         return@withContext try {
             val result = civicsApiService.getVoterInfo(address, electionId)
             val state = result.state.orEmpty()
@@ -56,7 +58,9 @@ class ElectionRepository(
         electionDao.removeAll()
     }
 
-    override suspend fun deleteElectionById(electionId: Long) = withContext(ioDispatcher) {
-        electionDao.removeElection(electionId)
+    override suspend fun deleteElection(election: Election) {
+        withContext(ioDispatcher) {
+            electionDao.removeElection(election)
+        }
     }
 }

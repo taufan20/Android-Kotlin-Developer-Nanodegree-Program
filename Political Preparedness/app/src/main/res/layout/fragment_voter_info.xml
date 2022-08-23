@@ -6,7 +6,7 @@
     <!-- TODO: Add data binding node for Voter Info ViewModel -->
     <data>
         <variable
-            name="voterInfoViewModel"
+            name="viewModel"
             type="com.example.android.politicalpreparedness.election.VoterInfoViewModel" />
     </data>
 
@@ -22,7 +22,10 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/default_padding"
             android:singleLine="true"
+            tools:title="VIP Test Election"
             app:title="@{viewModel.election.name}"
+            app:titleTextColor="@color/white"
+            android:background="@color/colorPrimaryDark"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- TODO: Add visual styling -->
@@ -30,10 +33,12 @@
             android:id="@+id/election_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_padding"
+            android:layout_margin="@dimen/default_margin"
             app:layout_constraintTop_toBottomOf="@id/election_name"
             android:text="@{viewModel.election.electionDay.toString()}"
-            tools:text="12 November 2055" />
+            tools:text="Tue Apr 07 00:00:00 EDT 2020"
+            android:textColor="@color/gray600"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
 
         <!-- TODO: Add visual styling and content -->
         <TextView
@@ -41,10 +46,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/election_information"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textStyle="bold"
             android:textColor="@color/gray900"
-            android:onClick="@{() -> viewModel.openElectionInfoUrl()}"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_marginTop="@dimen/default_margin"
+            android:onClick="@{() -> viewModel.onElectionInfoClicked()}"
             app:layout_constraintTop_toBottomOf="@id/election_date"
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
@@ -56,7 +62,11 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/state_header"
             app:layout_constraintStart_toStartOf="@id/election_date"
-            android:text="@{election.division.state}"/>
+            android:textColor="@color/gray600"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_marginTop="@dimen/default_padding"
+            android:text="@string/voting_locations"
+            android:onClick="@{() -> viewModel.onVotingLocationClicked()}"/>
 
         <!-- TODO: Add click binding to open web URL -->
         <!-- TODO: Add visual styling and content -->
@@ -66,7 +76,11 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/state_locations"
             app:layout_constraintStart_toStartOf="@id/election_date"
-            android:text="@{election.division.country}" />
+            android:textColor="@color/gray600"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_marginTop="@dimen/default_padding"
+            android:text="@string/ballot_information"
+            android:onClick="@{() -> viewModel.onBallotInfoClicked()}" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/address_group"
@@ -91,6 +105,16 @@
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
         <!-- TODO: Add button to save election to Room -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/follow_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/follow_election"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{() -> viewModel.onFollowButtonClicked()}"
+            android:layout_margin="@dimen/default_margin"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

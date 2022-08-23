@@ -37,7 +37,7 @@ class ElectionsViewModel(
         showLoading.value = true
         viewModelScope.launch {
             val result = dataSource.getUpComingElections()
-            showLoading.postValue(false)
+            showLoading.value = false
             when (result) {
                 is Result.Success<*> -> {
                     val dataList = ArrayList<Election>()

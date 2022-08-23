@@ -10,8 +10,8 @@ interface ElectionDataSource {
     val savedElections: LiveData<List<Election>>
     suspend fun getUpComingElections(): Result<List<Election>>
     suspend fun saveElection(election: Election)
-    suspend fun getElectionById(electionId: Long): Result<Election>
-    suspend fun getVoterInfo(address: String = "", electionId: Long): Result<List<State>>
+    suspend fun getElectionById(electionId: Int): Result<Election>
+    suspend fun getVoterInfo(address: String = "", electionId: Int): Result<List<State>>
     suspend fun deleteElections()
-    suspend fun deleteElectionById(electionId: Long)
+    suspend fun deleteElection(election: Election)
 }
