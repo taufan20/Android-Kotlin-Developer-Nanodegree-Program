@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.State
 import com.example.android.politicalpreparedness.network.models.VoterInfo
+import com.example.android.politicalpreparedness.representative.model.Representative
 
 interface ElectionDataSource {
 
@@ -14,4 +15,5 @@ interface ElectionDataSource {
     suspend fun getVoterInfo(address: String = "", electionId: Int): Result<List<State>>
     suspend fun deleteElections()
     suspend fun deleteElection(election: Election)
+    suspend fun getRepresentatives(address: String): Result<MutableList<Representative>>
 }

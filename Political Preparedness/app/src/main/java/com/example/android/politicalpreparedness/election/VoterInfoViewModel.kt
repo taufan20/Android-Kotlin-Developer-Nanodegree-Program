@@ -92,8 +92,10 @@ class VoterInfoViewModel(
         viewModelScope.launch {
             if (_savedElection.value == null) {
                 dataSource.saveElection(election)
+                _savedElection.value = election
             } else {
                 dataSource.deleteElection(election)
+                _savedElection.value = null
             }
         }
     }

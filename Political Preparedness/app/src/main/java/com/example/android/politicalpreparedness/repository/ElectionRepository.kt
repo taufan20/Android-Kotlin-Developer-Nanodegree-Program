@@ -6,6 +6,7 @@ import com.example.android.politicalpreparedness.datasource.ElectionDataSource
 import com.example.android.politicalpreparedness.datasource.Result
 import com.example.android.politicalpreparedness.network.CivicsApiService
 import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.representative.model.Representative
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -61,6 +62,24 @@ class ElectionRepository(
     override suspend fun deleteElection(election: Election) {
         withContext(ioDispatcher) {
             electionDao.removeElection(election)
+        }
+    }
+
+    override suspend fun getRepresentatives(address: String) = withContext(ioDispatcher) {
+        return@withContext try {
+            val result = civicsApiService.getRepresentatives(address)
+            val offices = result.offices
+            val officials = result.officials
+
+            val representatives = mutableListOf<Representative>()
+            offices.forEach { office ->
+                representatives.addAll(office.getRepresentatives(officials))
+            }
+
+            Result.Success(representatives)
+
+        } catch (e: Exception) {
+            Result.Error(e.localizedMessage)
         }
     }
 }
