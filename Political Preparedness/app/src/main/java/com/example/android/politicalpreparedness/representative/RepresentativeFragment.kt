@@ -72,6 +72,17 @@ class DetailFragment : Fragment() {
                 representativeAdapter.submitList(representatives)
         })
 
+        viewModel.showErrorMessage.observe(viewLifecycleOwner, Observer { message ->
+            binding.errorText.apply {
+                visibility = if (message.isEmpty()) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+                text = message
+            }
+        })
+
         //TODO: Establish button listeners for field and location search
         binding.buttonSearch.setOnClickListener {
             hideKeyboard()

@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.representative
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,10 +28,11 @@ class RepresentativeViewModel(
     val address: LiveData<Address>
         get() = _address
 
-    val showLoading: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val showLoading: SingleLiveEvent<Int> = SingleLiveEvent()
     val showErrorMessage: SingleLiveEvent<String> = SingleLiveEvent()
 
     init {
+        showLoading.value = View.GONE
         _address.value = Address( "", "", "", "", "")
     }
 
@@ -46,12 +48,15 @@ class RepresentativeViewModel(
 
      */
     private fun getRepresentatives(address: String) {
+        _representativeList.value = mutableListOf()
+        showLoading.value = View.VISIBLE
+        showErrorMessage.value = ""
         viewModelScope.launch {
             val result = dataSource.getRepresentatives(address)
-            showLoading.value = false
+            showLoading.value = View.GONE
             when (result) {
                 is Result.Success<*> -> {
-                    _representativeList.value = result as MutableList<Representative>
+                    _representativeList.value = result.data as MutableList<Representative>
                 }
                 is Result.Error ->
                     showErrorMessage.value = result.message.orEmpty()

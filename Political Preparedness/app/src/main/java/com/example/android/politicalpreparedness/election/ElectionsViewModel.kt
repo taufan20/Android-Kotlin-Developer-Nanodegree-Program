@@ -2,6 +2,7 @@ package com.example.android.politicalpreparedness.election
 
 import android.app.Application
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,16 +29,17 @@ class ElectionsViewModel(
     val navigateToVoterInfo: LiveData<Election>
         get() = _navigateToVoterInfo
 
-    val showLoading: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val showLoading: SingleLiveEvent<Int> = SingleLiveEvent()
     val showErrorMessage: SingleLiveEvent<String> = SingleLiveEvent()
 
 
     //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
     fun getUpComingElections() {
-        showLoading.value = true
+        showLoading.value = View.VISIBLE
+        showErrorMessage.value = ""
         viewModelScope.launch {
             val result = dataSource.getUpComingElections()
-            showLoading.value = false
+            showLoading.value = View.GONE
             when (result) {
                 is Result.Success<*> -> {
                     val dataList = ArrayList<Election>()

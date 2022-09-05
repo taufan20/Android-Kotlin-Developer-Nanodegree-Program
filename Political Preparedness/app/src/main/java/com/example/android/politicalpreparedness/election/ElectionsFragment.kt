@@ -55,6 +55,17 @@ class ElectionsFragment: Fragment() {
             }
         })
 
+        viewModel.showErrorMessage.observe(viewLifecycleOwner, Observer { message ->
+            binding.errorText.apply {
+                visibility = if (message.isEmpty()) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+                text = message
+            }
+        })
+
 
         //TODO: Initiate recycler adapters
         val upComingElectionAdapter = ElectionListAdapter(ElectionListener { election ->
