@@ -1,10 +1,12 @@
 package com.example.android.politicalpreparedness.election
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.datasource.ElectionDataSource
 import com.example.android.politicalpreparedness.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
@@ -31,7 +33,7 @@ class VoterInfoViewModel(
     val savedElection: LiveData<Election?>
         get() = _savedElection
 
-    val showLoading: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val showLoading: SingleLiveEvent<Int> = SingleLiveEvent()
     val showErrorMessage: SingleLiveEvent<String> = SingleLiveEvent()
 
     private val _navigateToWebBrowser = MutableLiveData<String?>()
@@ -54,10 +56,10 @@ class VoterInfoViewModel(
 
     private fun getVoterInfo() {
         viewModelScope.launch {
-            showLoading.value = true
+            clearData()
             val dummyAddress = "Modesto"
             val result = dataSource.getVoterInfo(address = dummyAddress, electionId = election.id)
-            showLoading.value = false
+            showLoading.value = View.GONE
             when (result) {
                 is Result.Success<*> -> {
                     val states = result.data as List<State>
@@ -71,9 +73,18 @@ class VoterInfoViewModel(
                 is Result.Error -> {
                     showErrorMessage.value = result.message.orEmpty()
                 }
+                else -> {
+                    showErrorMessage.value = app.getString(R.string.unable_to_connect)
+                }
             }
         }
     }
+
+    private fun clearData() {
+        showLoading.value = View.VISIBLE
+        showErrorMessage.value = ""
+    }
+
 
     private fun getSavedElection() {
         viewModelScope.launch {

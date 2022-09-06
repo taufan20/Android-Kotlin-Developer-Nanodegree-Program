@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.datasource.ElectionDataSource
 import com.example.android.politicalpreparedness.network.models.Election
 import kotlinx.coroutines.launch
@@ -35,8 +36,7 @@ class ElectionsViewModel(
 
     //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
     fun getUpComingElections() {
-        showLoading.value = View.VISIBLE
-        showErrorMessage.value = ""
+        clearData()
         viewModelScope.launch {
             val result = dataSource.getUpComingElections()
             showLoading.value = View.GONE
@@ -46,10 +46,20 @@ class ElectionsViewModel(
                     dataList.addAll((result.data as List<Election>))
                     _upComingElections.value = dataList
                 }
-                is Result.Error ->
+                is Result.Error -> {
                     showErrorMessage.value = result.message.orEmpty()
+                }
+                else -> {
+                    showErrorMessage.value = app.getString(R.string.unable_to_connect)
+                }
             }
         }
+    }
+
+    private fun clearData() {
+        _upComingElections.value = mutableListOf()
+        showLoading.value = View.VISIBLE
+        showErrorMessage.value = ""
     }
 
     //TODO: Create functions to navigate to saved or upcoming election voter info

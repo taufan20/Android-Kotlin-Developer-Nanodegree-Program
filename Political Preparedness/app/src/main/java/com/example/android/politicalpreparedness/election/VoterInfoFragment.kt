@@ -57,7 +57,6 @@ class VoterInfoFragment : Fragment() {
 
         })
 
-
         //TODO: Handle loading of URLs
 
         //TODO: Handle save button UI state

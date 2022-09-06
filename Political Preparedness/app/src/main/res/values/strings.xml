@@ -16,6 +16,7 @@
     <string name="zip">Zip</string>
     <string name="use_my_location">Use My Location</string>
     <string name="representative">Representative</string>
+    <string name="unable_to_connect">Unable to connect. Please check your internet connection.</string>
 
     <!-- TODO: Add necessary string values -->
 

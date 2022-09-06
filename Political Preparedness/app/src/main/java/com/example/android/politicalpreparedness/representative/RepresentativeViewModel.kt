@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.datasource.ElectionDataSource
 import com.example.android.politicalpreparedness.datasource.Result
 import com.example.android.politicalpreparedness.network.models.Address
@@ -48,9 +49,7 @@ class RepresentativeViewModel(
 
      */
     private fun getRepresentatives(address: String) {
-        _representativeList.value = mutableListOf()
-        showLoading.value = View.VISIBLE
-        showErrorMessage.value = ""
+        clearData()
         viewModelScope.launch {
             val result = dataSource.getRepresentatives(address)
             showLoading.value = View.GONE
@@ -58,10 +57,20 @@ class RepresentativeViewModel(
                 is Result.Success<*> -> {
                     _representativeList.value = result.data as MutableList<Representative>
                 }
-                is Result.Error ->
+                is Result.Error -> {
                     showErrorMessage.value = result.message.orEmpty()
+                }
+                else -> {
+                    showErrorMessage.value = app.getString(R.string.unable_to_connect)
+                }
             }
         }
+    }
+
+    private fun clearData() {
+        _representativeList.value = mutableListOf()
+        showLoading.value = View.VISIBLE
+        showErrorMessage.value = ""
     }
 
     //TODO: Create function get address from geo location

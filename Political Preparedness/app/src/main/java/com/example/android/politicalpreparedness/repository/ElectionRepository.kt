@@ -7,11 +7,15 @@ import com.example.android.politicalpreparedness.datasource.ElectionDataSource
 import com.example.android.politicalpreparedness.datasource.Result
 import com.example.android.politicalpreparedness.network.CivicsApiService
 import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.network.models.ErrorResponse
 import com.example.android.politicalpreparedness.representative.model.Representative
 import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.io.IOException
+import retrofit2.HttpException
 
 class ElectionRepository(
     private val civicsApiService: CivicsApiService,
@@ -25,9 +29,8 @@ class ElectionRepository(
             return@withContext try {
                 val result = civicsApiService.getElections()
                 Result.Success(result.elections)
-            } catch (e: Exception) {
-                Result.Error(e.localizedMessage)
-
+            } catch (throwable: Throwable) {
+                exceptionHandling(throwable)
             }
         }
 
@@ -51,9 +54,8 @@ class ElectionRepository(
             val result = civicsApiService.getVoterInfo(address, electionId)
             val state = result.state.orEmpty()
             Result.Success(state)
-        } catch (e: Exception) {
-            Result.Error(e.localizedMessage)
-
+        } catch (throwable: Throwable) {
+            exceptionHandling(throwable)
         }
     }
 
@@ -80,9 +82,34 @@ class ElectionRepository(
 
             Result.Success(representatives)
 
-        } catch (e: Exception) {
-            Result.Error(e.localizedMessage)
+        } catch (throwable: Throwable) {
+            exceptionHandling(throwable)
         }
     }
 
+    private fun exceptionHandling(throwable: Throwable) = when (throwable) {
+        is IOException -> Result.NetworkError
+        is HttpException -> {
+            val code = throwable.code()
+            val errorResponse = convertErrorBody(throwable)
+            Result.Error(errorResponse?.error?.message.orEmpty(), code)
+        }
+        else -> {
+            Result.Error(null, null)
+        }
+    }
+
+    private fun convertErrorBody(throwable: HttpException): ErrorResponse? {
+        return try {
+            throwable.response()?.errorBody()?.source()?.let {
+                val errorResponse = Gson().fromJson(
+                    throwable.response()?.errorBody()?.charStream(),
+                    ErrorResponse::class.java
+                )
+                errorResponse
+            }
+        } catch (exception: Exception) {
+            null
+        }
+    }
 }
