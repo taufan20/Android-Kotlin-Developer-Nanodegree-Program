@@ -19,7 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/search_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent">
 
             <!-- TODO: Add visual styling and content -->
@@ -131,6 +131,7 @@
                 android:id="@+id/button_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/ColoredButton"
                 android:text="@string/find_my_representatives"
                 app:layout_constraintTop_toBottomOf="@id/zip"
                 android:layout_marginTop="@dimen/default_margin"
@@ -145,17 +146,30 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/button_search"
                 android:text="@string/use_my_location"
+                style="@style/ColoredButton"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginBottom="@dimen/default_padding"/>
 
-            <!-- TODO: Add visual styling and content -->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/representative_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_container"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- TODO: Add visual styling and content -->
             <TextView
                 android:id="@+id/representative_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/button_location"
+                app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/representative"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textColor="@color/gray600"

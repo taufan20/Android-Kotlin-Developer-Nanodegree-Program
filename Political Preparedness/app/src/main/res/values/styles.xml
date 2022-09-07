@@ -10,5 +10,21 @@
     </style>
 
     <!-- TODO: Add necessary styles -->
+    <style name="ColoredButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">@color/white</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">18dp</item>
+        <item name="android:paddingBottom">18dp</item>
+    </style>
+
+    <style name="CaptionText" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">@color/gray600</item>
+    </style>
+
+    <style name="TitleText" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@color/gray900</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

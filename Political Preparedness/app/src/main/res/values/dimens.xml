@@ -5,6 +5,7 @@
     <dimen name="divider_height">1dp</dimen>
     <dimen name="icon_size">24dp</dimen>
     <dimen name="circular_size">40dp</dimen>
+    <dimen name="icon_padding">4dp</dimen>
 
     <!-- TODO: Add necessary dimension values -->s
 

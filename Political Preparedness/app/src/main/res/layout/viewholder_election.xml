@@ -25,8 +25,7 @@
             android:layout_height="wrap_content"
             tools:text="VIP Test Election"
             android:text="@{election.name}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="@color/gray900"
+            style="@style/TitleText"
             android:layout_marginTop="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"/>
@@ -37,8 +36,7 @@
             android:layout_height="wrap_content"
             android:text="@{election.electionDay.toString()}"
             tools:text="Sun Jun 06 00:00:00 EDT 2021"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            android:textColor="@color/gray600"
+            style="@style/CaptionText"
             android:layout_marginBottom="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"/>

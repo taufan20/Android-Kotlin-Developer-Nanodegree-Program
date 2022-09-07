@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context="com.example.android.politicalpreparedness.MainActivity">
+        tools:context="com.example.android.politicalpreparedness.MainActivity" >
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/error_text"
@@ -38,7 +38,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent"/>
-
 
         <!-- TODO: Add Upcoming Election Recycler and Header -->
         <androidx.recyclerview.widget.RecyclerView

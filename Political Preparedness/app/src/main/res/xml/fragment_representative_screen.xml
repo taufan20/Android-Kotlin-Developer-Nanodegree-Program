@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ConstraintSet android:id="@+id/start">
-        <Constraint android:id="@+id/search_section" />
+        <Constraint android:id="@+id/search_container" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -24,7 +24,7 @@
 
         <OnSwipe
             app:dragDirection="dragUp"
-            app:touchAnchorId="@+id/representatives_section" />
+            app:touchAnchorId="@+id/representative_container" />
 
     </Transition>
 </MotionScene>
