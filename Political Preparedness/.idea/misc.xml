@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ballot_logo.xml" value="0.1" />
+        <entry key="app/src/main/res/layout-land/fragment_elections.xml" value="0.16822916666666668" />
+        <entry key="app/src/main/res/layout-land/fragment_launch.xml" value="0.165" />
+        <entry key="app/src/main/res/layout-land/fragment_representative.xml" value="0.16822916666666668" />
         <entry key="app/src/main/res/layout/fragment_election.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_launch.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_representative.xml" value="0.25" />
