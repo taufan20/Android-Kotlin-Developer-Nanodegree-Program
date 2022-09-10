@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -23,13 +24,26 @@ import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.repository.ElectionRepository
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
+import com.example.android.politicalpreparedness.representative.model.Representative
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.util.Locale
 
+
+private const val KEY_MOTION_LAYOUT_STATE = "KEY_MOTION_LAYOUT_STATE"
+private const val KEY_ADDRESS_1 = "KEY_ADDRESS_1"
+private const val KEY_ADDRESS_2 = "KEY_ADDRESS_2"
+private const val KEY_CITY = "KEY_CITY"
+private const val KEY_STATE = "KEY_STATE"
+private const val KEY_ZIP = "KEY_ZIP"
+private const val KEY_REPRESENTATIVES = "KEY_REPRESENTATIVES"
+
 class DetailFragment : Fragment() {
 
+    private var representativeList: ArrayList<Representative> = arrayListOf()
     private lateinit var binding: FragmentRepresentativeBinding
+
+    private lateinit var address: Address
 
     companion object {
         //TODO: Add Constant for Location request
@@ -58,10 +72,11 @@ class DetailFragment : Fragment() {
 
         fusedLocationProviderCLient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-
         //TODO: Add binding values
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.executePendingBindings()
+
 
         //TODO: Define and assign Representative adapter
         val representativeAdapter = RepresentativeListAdapter()
@@ -69,7 +84,9 @@ class DetailFragment : Fragment() {
 
         //TODO: Populate Representative adapter
         viewModel.representativeList.observe(viewLifecycleOwner, Observer { representatives ->
-                representativeAdapter.submitList(representatives)
+            representativeList = representatives
+            representativeAdapter.submitList(representatives)
+
         })
 
         viewModel.showErrorMessage.observe(viewLifecycleOwner, Observer { message ->
@@ -105,6 +122,29 @@ class DetailFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            val motionLayoutState = savedInstanceState?.getInt(KEY_MOTION_LAYOUT_STATE)
+            motionLayoutState?.let { binding.representativeMotionLayout.transitionToState(it) }
+        }
+
+        address = Address(
+            line1 = savedInstanceState?.getString(KEY_ADDRESS_1).orEmpty(),
+            line2 = savedInstanceState?.getString(KEY_ADDRESS_2).orEmpty(),
+            city = savedInstanceState?.getString(KEY_CITY).orEmpty(),
+            state = savedInstanceState?.getString(KEY_STATE).orEmpty(),
+            zip = savedInstanceState?.getString(KEY_ZIP).orEmpty()
+        )
+
+        representativeList = savedInstanceState?.getParcelableArrayList(KEY_REPRESENTATIVES) ?: ArrayList()
+
+        viewModel.setRepresentatives(representativeList)
+        viewModel.setAddress(address)
+
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -177,5 +217,28 @@ class DetailFragment : Fragment() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+
+        with (binding) {
+            outState.apply {
+                putString(KEY_ADDRESS_1, addressLine1.text.toString())
+                putString(KEY_ADDRESS_2, addressLine2.text.toString())
+                putString(KEY_CITY, city.text.toString())
+                putString(KEY_STATE, stateSpinner.selectedItem.toString())
+                putString(KEY_ZIP, zip.text.toString())
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    putInt(KEY_MOTION_LAYOUT_STATE, representativeMotionLayout.currentState)
+                }
+
+                putParcelableArrayList(KEY_REPRESENTATIVES, representativeList)
+            }
+        }
+
+        super.onSaveInstanceState(outState)
+
+    }
+
+
 
 }

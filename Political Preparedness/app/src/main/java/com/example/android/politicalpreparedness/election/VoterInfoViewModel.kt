@@ -11,6 +11,8 @@ import com.example.android.politicalpreparedness.datasource.ElectionDataSource
 import com.example.android.politicalpreparedness.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import com.example.android.politicalpreparedness.datasource.Result
+import com.example.android.politicalpreparedness.network.jsonadapter.DateAdapter
+import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.State
 import com.example.android.politicalpreparedness.network.models.VoterInfo
@@ -32,6 +34,8 @@ class VoterInfoViewModel(
     private var _savedElection = MutableLiveData<Election?>()
     val savedElection: LiveData<Election?>
         get() = _savedElection
+
+    val electionDay = DateAdapter().dateToJson(election.electionDay)
 
     val showLoading: SingleLiveEvent<Int> = SingleLiveEvent()
     val showErrorMessage: SingleLiveEvent<String> = SingleLiveEvent()
@@ -57,8 +61,13 @@ class VoterInfoViewModel(
     private fun getVoterInfo() {
         viewModelScope.launch {
             clearData()
-            val dummyAddress = "Modesto"
-            val result = dataSource.getVoterInfo(address = dummyAddress, electionId = election.id)
+            var address = election.division.country + "/" + election.division.state
+
+            if(election.division.state.isEmpty())        {
+                address =election.division.country + "/ks"
+            }
+
+            val result = dataSource.getVoterInfo(address = address, electionId = election.id)
             showLoading.value = View.GONE
             when (result) {
                 is Result.Success<*> -> {

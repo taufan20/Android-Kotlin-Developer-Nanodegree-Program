@@ -13,6 +13,7 @@ import com.example.android.politicalpreparedness.network.models.Election
 import kotlinx.coroutines.launch
 import com.example.android.politicalpreparedness.datasource.Result
 import com.example.android.politicalpreparedness.utils.SingleLiveEvent
+import com.google.gson.Gson
 
 //TODO: Construct ViewModel and provide election datasource
 class ElectionsViewModel(

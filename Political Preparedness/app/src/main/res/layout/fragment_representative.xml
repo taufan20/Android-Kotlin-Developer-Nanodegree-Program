@@ -12,6 +12,7 @@
 
     <!-- TODO: Add motion scene to hide form on vertical scroll. -->
     <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/representative_motion_layout"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         app:layoutDescription="@xml/fragment_representative_screen">
@@ -48,7 +49,7 @@
                 android:inputType="textPostalAddress"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/search_title"
-                android:text="@{viewModel.address.line1}"
+                android:text="@={viewModel.address.line1}"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
@@ -65,7 +66,7 @@
                 android:inputType="textPostalAddress"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/address_line_1"
-                android:text="@{viewModel.address.line2}"
+                android:text="@={viewModel.address.line2}"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
@@ -83,7 +84,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/state_spinner"
                 app:layout_constraintTop_toBottomOf="@id/address_line_2"
-                android:text="@{viewModel.address.city}"
+                android:text="@={viewModel.address.city}"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
@@ -121,7 +122,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/city"
                 app:layout_constraintTop_toBottomOf="@id/city"
-                android:text="@{viewModel.address.zip}"
+                android:text="@={viewModel.address.zip}"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginBottom="@dimen/default_padding"/>

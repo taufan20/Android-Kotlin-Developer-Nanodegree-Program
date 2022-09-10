@@ -24,7 +24,10 @@
 
         <OnSwipe
             app:dragDirection="dragUp"
-            app:touchAnchorId="@+id/representative_container" />
+            app:touchAnchorId="@+id/representative_container"
+            app:touchAnchorSide="top"
+            app:onTouchUp="autoComplete" />
 
     </Transition>
+
 </MotionScene>

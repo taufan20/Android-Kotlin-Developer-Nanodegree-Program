@@ -6,13 +6,15 @@
         <variable
             name="election"
             type="com.example.android.politicalpreparedness.network.models.Election" />
-
+        <variable
+            name="electionDay"
+            type="String" />
         <variable
             name="clickListener"
             type="com.example.android.politicalpreparedness.election.adapter.ElectionListener" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,24 +30,33 @@
             style="@style/TitleText"
             android:layout_marginTop="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"/>
+            android:layout_marginEnd="@dimen/default_margin"
+            tool:layout_constraintStart_toStartOf="parent"
+            tool:layout_constraintTop_toTopOf="parent"
+            tool:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/election_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{election.electionDay.toString()}"
+            android:text="@{electionDay}"
             tools:text="Sun Jun 06 00:00:00 EDT 2021"
             style="@style/CaptionText"
-            android:layout_marginBottom="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"/>
+            android:layout_marginEnd="@dimen/default_margin"
+            tool:layout_constraintTop_toBottomOf="@+id/election_name"
+            tool:layout_constraintStart_toStartOf="parent"
+            tool:layout_constraintEnd_toEndOf="parent"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
             android:background="@color/gray200"
-            android:layout_marginStart="@dimen/default_margin"/>
+            android:layout_marginStart="@dimen/default_margin"
+            tool:layout_constraintTop_toBottomOf="@+id/election_date"
+            tool:layout_constraintStart_toStartOf="parent"
+            tool:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/default_margin"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

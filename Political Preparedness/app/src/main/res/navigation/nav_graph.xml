@@ -23,14 +23,14 @@
         android:id="@+id/representativeFragment"
         android:name="com.example.android.politicalpreparedness.representative.DetailFragment"
         android:label="fragment_representative"
-        tools:layout="@layout/fragment_representative"></fragment>
+        tools:layout="@layout/fragment_representative" />
     <fragment
         android:id="@+id/voterInfoFragment"
         android:name="com.example.android.politicalpreparedness.election.VoterInfoFragment"
         android:label="fragment_voter_info">
         <argument
             android:name="arg_election"
-            app:argType="com.example.android.politicalpreparedness.network.models.Election" />
+            app:argType="com.example.android.politicalpreparedness.network.models.Election"/>
     </fragment>
     <fragment
         android:id="@+id/electionsFragment"

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.HeaderBinding
 import com.example.android.politicalpreparedness.databinding.ViewholderElectionBinding
+import com.example.android.politicalpreparedness.network.jsonadapter.DateAdapter
 import com.example.android.politicalpreparedness.network.models.Election
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -71,6 +72,8 @@ class ElectionListAdapter(private val clickListener: ElectionListener): ListAdap
 class ElectionViewHolder(private val binding: ViewholderElectionBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Election, clickListener: ElectionListener) {
+
+        binding.electionDay = DateAdapter().dateToJson(item.electionDay)
         binding.election = item
         binding.clickListener = clickListener
         binding.executePendingBindings()

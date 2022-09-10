@@ -8,9 +8,10 @@ import com.example.android.politicalpreparedness.datasource.Result
 import com.example.android.politicalpreparedness.network.CivicsApiService
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.ErrorResponse
+import com.example.android.politicalpreparedness.network.models.dateToFormatedDate
+import com.example.android.politicalpreparedness.network.models.ocdDivisionIdToDivision
 import com.example.android.politicalpreparedness.representative.model.Representative
 import com.google.gson.Gson
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -28,7 +29,15 @@ class ElectionRepository(
     override suspend fun getUpComingElections() = withContext(ioDispatcher) {
             return@withContext try {
                 val result = civicsApiService.getElections()
-                Result.Success(result.elections)
+                val elections = result.elections.map { election ->
+                    Election(
+                        id = election.id,
+                        name = election.name,
+                        electionDay = election.dateToFormatedDate(),
+                        division = election.ocdDivisionIdToDivision()
+                    )
+                }
+                Result.Success(elections)
             } catch (throwable: Throwable) {
                 exceptionHandling(throwable)
             }
@@ -53,6 +62,7 @@ class ElectionRepository(
         return@withContext try {
             val result = civicsApiService.getVoterInfo(address, electionId)
             val state = result.state.orEmpty()
+            Log.d("ElectionRepository", "getVoterInfo: result ${Gson().toJson(result)}")
             Result.Success(state)
         } catch (throwable: Throwable) {
             exceptionHandling(throwable)
